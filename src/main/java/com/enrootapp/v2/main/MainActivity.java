@@ -76,7 +76,6 @@ public class MainActivity extends EnrootActivity implements View.OnClickListener
         tabConversation.setOnClickListener(this);
         tabNotif.setOnClickListener(this);
 
-
         MaterialRippleLayout.on(tabLive).rippleColor(Color.parseColor("#00bcd4"))
                 .rippleAlpha(1f)
                 .rippleOverlay(true)
@@ -104,8 +103,6 @@ public class MainActivity extends EnrootActivity implements View.OnClickListener
                 .create();
 
         setTab(0);
-
-
     }
 
     @Override

@@ -67,7 +67,7 @@ public class LoginFragment extends EnrootFragment {
         waiting.setVisibility(View.GONE);
         authButton.setFragment(this);
         authButton.setReadPermissions(Arrays.asList("email", "user_hometown",
-                 "user_tagged_places", "user_location", "user_photos"));
+                 "user_tagged_places", "user_location", "user_photos", "user_friends"));
         return view;
     }
 
@@ -75,31 +75,22 @@ public class LoginFragment extends EnrootFragment {
         Logger.d(TAG, "onSessionStateChange");
         if (state.isOpened() ) {
             Logger.d(TAG, "Logged in...");
-            if (ParseUser.getCurrentUser() == null) {
-                getInfo(session);
-            }
+            Request.newMeRequest(session, new Request.GraphUserCallback() {
+                @Override
+                public void onCompleted(GraphUser user, Response response) {
+                    if (user != null) {
+                        // Display the parsed user info
+                        Logger.d(TAG, "Response : " + response);
+                        Logger.d(TAG, "UserID : " + user.getId());
+                        Logger.d(TAG, "User FirstName: " + user.getName());
 
-
-
-        }
-    }
-
-    public void getInfo(final Session session){
-        Request.newMeRequest(session, new Request.GraphUserCallback() {
-            @Override
-            public void onCompleted(GraphUser user, Response response) {
-                if (user != null) {
-                    // Display the parsed user info
-                    Logger.d(TAG, "Response : " + response);
-                    Logger.d(TAG, "UserID : " + user.getId());
-                    Logger.d(TAG, "User FirstName: " + user.getName());
-
-                    EnrootApp.getInstance().setFbId(user.getId());
-                    EnrootApp.getInstance().setFbName(user.getName());
-                    getFbImpressions(session);
+                        EnrootApp.getInstance().setFbId(user.getId());
+                        EnrootApp.getInstance().setFbName(user.getName());
+                        getFbImpressions(session);
+                    }
                 }
-            }
-        }).executeAsync();
+            }).executeAsync();
+        }
     }
 
     public void getFbImpressions(Session session) {
@@ -112,7 +103,6 @@ public class LoginFragment extends EnrootFragment {
                     @Override
                     public void onCompleted(Response response) {
                         try {
-
                             GraphObject go = response.getGraphObject();
                             JSONObject jso = go.getInnerJSONObject();
                             JSONArray data = jso.getJSONArray("data");
@@ -128,8 +118,8 @@ public class LoginFragment extends EnrootFragment {
                                 String caption = photo.getString("caption");
                                 String image = photo.getString("picture");
                                 Impression imp = new Impression();
-                               // ParseUser current = ParseUser.getCurrentUser();
-                               // imp.setOwner(current);
+                                // ParseUser current = ParseUser.getCurrentUser();
+                                // imp.setOwner(current);
                                 imp.setOwnerId(mApp.getFbId());
                                 imp.setOwnerName(mApp.getFbName());
                                 imp.setDirection((int) (Math.random() * 360));
@@ -171,7 +161,6 @@ public class LoginFragment extends EnrootFragment {
                     }
                 }
         ).executeAsync();
-
     }
 
 
