@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
+
+
+    <RelativeLayout
+        android:id="@+id/custome_action_bar_container"
+        android:layout_width="fill_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentTop="true"
+        android:background="#00bcd4"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/custome_action_bar_back"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:paddingLeft="@dimen/location_bar_margin"
+            android:paddingRight="@dimen/location_bar_margin"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/custome_action_bar_tag_text"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_toRightOf="@+id/custome_action_bar_back"
+            android:gravity="center_vertical"
+            android:text="Tag"
+            android:textColor="@color/bright_foreground_inverse_material_light"
+            android:textSize="20dp" />
+
+        <LinearLayout
+            android:id="@+id/custome_action_bar_location_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_margin="5dp"
+                android:src="@drawable/location_white" />
+
+            <TextView
+                android:id="@+id/custome_action_bar_location"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:text="Dod IITG"
+                android:textColor="#ffffff"
+                android:textIsSelectable="false"
+                android:textSize="20dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_margin="5dp"
+                android:src="@drawable/edit" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/shutter_extended_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <View
+            android:id="@+id/emty_view"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp" />
+
+        <com.enrootapp.v2.main.util.SquareLayout
+            android:id="@+id/empty_view2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/emty_view">
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </com.enrootapp.v2.main.util.SquareLayout>
+
+        <ImageButton
+            android:id="@+id/shutter_extended"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/empty_view2"
+            android:layout_gravity="center_horizontal|bottom"
+            android:background="#ffffff"
+            android:src="@drawable/shutter_extended" />
+    </RelativeLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/custome_action_bar_container"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:weightSum="1">
+
+
+        <View
+            android:id="@+id/empty_view3"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp" />
+
+        <com.enrootapp.v2.main.util.SquareLayout
+            android:id="@+id/empty_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <SurfaceView
+                android:id="@+id/surface_for_tagging_people"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+
+            <EditText
+                android:id="@+id/selfie_tagging_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00ffffff"
+                android:textColor="#00ffffff" />
+
+        </com.enrootapp.v2.main.util.SquareLayout>
+
+        <RelativeLayout
+            android:id="@+id/capation_container"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:background="#ffffff"
+            android:visibility="visible">
+
+
+            <EditText
+                android:id="@+id/edit_capation"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_capation"
+                android:layout_marginTop="40dp"
+                android:drawableLeft="@drawable/caption_tag"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="  Caption"
+                android:paddingBottom="15dp"
+                android:paddingTop="@dimen/padding_capation"
+                android:textColor="#737273"
+                android:textColorHint="#66000000" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/bottom_bar_container"
+            android:layout_width="fill_parent"
+            android:layout_height="74dp"
+            android:background="@color/bright_foreground_material_dark"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tag_and_share_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="Tag and Share"
+                android:textColor="#737273"
+                android:textSize="28dp" />
+
+            <ImageView
+                android:id="@+id/bottom_bar_btn_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/next" />
+        </RelativeLayout>
+
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/control_cam"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:background="#00ffffff"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <Button
+                android:id="@+id/selfie_switch_cam"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/switchlogo" />
+
+            <Button
+                android:id="@+id/selfie_btn_golive"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/live_grey" />
+
+            <ImageButton
+                android:id="@+id/selfie_btn_shutter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/circle"
+                android:src="@drawable/shutter"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/select_friend_rv_selfie"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:animateLayoutChanges="true"
+        android:background="#ffffffff"
+        android:visibility="gone"></View>
+</RelativeLayout>
