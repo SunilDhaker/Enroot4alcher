@@ -1,7 +1,6 @@
 package com.enrootapp.v2.main.util.ar;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.opengl.GLES11Ext;
@@ -22,7 +21,6 @@ import com.enrootapp.v2.main.appunta.android.orientation.OrientationDevice;
 import com.enrootapp.v2.main.data.Impression;
 import com.enrootapp.v2.main.tabs.ArBrowserFragment;
 import com.enrootapp.v2.main.util.Logger;
-import com.enrootapp.v2.main.util.TestUtil;
 import com.enrootapp.v2.main.util.graphics.DirectVideo;
 import com.enrootapp.v2.main.util.graphics.ImpressionTexture;
 import com.enrootapp.v2.main.util.graphics.MatrixHelper;
@@ -297,14 +295,6 @@ public class ArSurfaceView extends GLSurfaceView implements GLSurfaceView.Render
             // Log.d(TAG , "focused stack " +focusedStack);
             if (containerFragment != null)
                 if (add) {
-                    Impression imp = new Impression();
-                    User u = new User();
-                    u.setFbName("test");
-                    Bitmap btmp;
-                    imp.setImpression(TestUtil.getArImage(imp.getImpression(), u, mContext));
-                    imp.setDirection(focusedStack * 45f);
-                    Logger.d(TAG, "size of bitmap " + imp.getDirection());
-                    addImpreession(imp);
                     containerFragment.touch(event);
                 }
             return true;

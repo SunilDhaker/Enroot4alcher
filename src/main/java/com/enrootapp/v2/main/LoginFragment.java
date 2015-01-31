@@ -8,13 +8,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.enrootapp.v2.main.app.EnrootApp;
 import com.enrootapp.v2.main.app.EnrootFragment;
+import com.enrootapp.v2.main.data.GeoName;
+import com.enrootapp.v2.main.data.Impression;
 import com.enrootapp.v2.main.util.Logger;
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphObject;
+import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
+import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -24,6 +42,8 @@ public class LoginFragment extends EnrootFragment {
     LoginButton authButton;
     TextView waiting;
     private UiLifecycleHelper uiHelper;
+    ArrayList<Impression> imps = new ArrayList<Impression>();
+    ArrayList<GeoName> gname = new ArrayList<GeoName>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,12 +75,105 @@ public class LoginFragment extends EnrootFragment {
         Logger.d(TAG, "onSessionStateChange");
         if (state.isOpened() ) {
             Logger.d(TAG, "Logged in...");
+            if (ParseUser.getCurrentUser() == null) {
+                getInfo(session);
+            }
 
-            authButton.setVisibility(View.INVISIBLE);
-            waiting.setVisibility(View.VISIBLE);
+
 
         }
     }
+
+    public void getInfo(final Session session){
+        Request.newMeRequest(session, new Request.GraphUserCallback() {
+            @Override
+            public void onCompleted(GraphUser user, Response response) {
+                if (user != null) {
+                    // Display the parsed user info
+                    Logger.d(TAG, "Response : " + response);
+                    Logger.d(TAG, "UserID : " + user.getId());
+                    Logger.d(TAG, "User FirstName: " + user.getName());
+
+                    EnrootApp.getInstance().setFbId(user.getId());
+                    EnrootApp.getInstance().setFbName(user.getName());
+                    getFbImpressions(session);
+                }
+            }
+        }).executeAsync();
+    }
+
+    public void getFbImpressions(Session session) {
+        new Request(
+                session,
+                "me/photos?fields=picture,place,name",
+                null,
+                HttpMethod.GET,
+                new Request.Callback() {
+                    @Override
+                    public void onCompleted(Response response) {
+                        try {
+
+                            GraphObject go = response.getGraphObject();
+                            JSONObject jso = go.getInnerJSONObject();
+                            JSONArray data = jso.getJSONArray("data");
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject photo = data.getJSONObject(i);
+                                JSONObject place = photo.getJSONObject("place");
+                                String name = place.getString("name");
+                                JSONObject location = place.getJSONObject("location");
+                                double latitude = location.getDouble("latitude");
+                                double longitude = location.getDouble("longitude");
+                                String id = place.getString("id");
+                                //Create the impressions here
+                                String caption = photo.getString("caption");
+                                String image = photo.getString("picture");
+                                Impression imp = new Impression();
+                               // ParseUser current = ParseUser.getCurrentUser();
+                               // imp.setOwner(current);
+                                imp.setOwnerId(mApp.getFbId());
+                                imp.setOwnerName(mApp.getFbName());
+                                imp.setDirection((int) (Math.random() * 360));
+                                imp.setTimestamp(new Date(System.currentTimeMillis()));
+                                imp.setCaption(caption);
+                                imp.setImageUrl(image);
+                                imp.isFromFacebook(true);
+                                imp.setType(0);
+
+                                GeoName g = new GeoName();
+                                g.setName(name);
+                                g.setId(id);
+                                g.setCoordinates(new ParseGeoPoint(latitude, longitude));
+                                imp.setGeoname(g);
+                                imps.add(imp);
+                                gname.add(g);
+                            }
+
+                            ParseUser.saveAllInBackground(gname, new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e != null) Logger.d(TAG, "Failed to save geonames.", e);
+                                    else {
+                                        ParseUser.saveAllInBackground(imps, new SaveCallback() {
+                                            @Override
+                                            public void done(ParseException e) {
+                                                if (e != null) Logger.d(TAG, "Failed to save geonames.", e);
+                                                else {
+                                                    Logger.d(TAG, "Successfully saved all impressions + geonames.");
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        } catch (Exception e) {
+                            Logger.d(TAG, "Failed to create impression from facebook.", e);
+                        }
+                    }
+                }
+        ).executeAsync();
+
+    }
+
 
     @Override
     public void onResume() {
@@ -79,6 +192,7 @@ public class LoginFragment extends EnrootFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         uiHelper.onActivityResult(requestCode, resultCode, data);
+        ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
     }
 
     @Override

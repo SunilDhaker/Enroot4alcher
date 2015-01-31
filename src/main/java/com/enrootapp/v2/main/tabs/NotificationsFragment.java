@@ -18,7 +18,6 @@ public class NotificationsFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         RecyclerView rv = new RecyclerView(getActivity());
         rv.setHasFixedSize(true);
-        rv.setAdapter(new NotificationAdapter());
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         return rv;
     }

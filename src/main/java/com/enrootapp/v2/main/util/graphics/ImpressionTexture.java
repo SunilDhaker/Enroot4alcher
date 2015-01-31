@@ -222,8 +222,9 @@ public class ImpressionTexture {
         GLES20.glDisableVertexAttribArray(mTextureCoordHandle);
     }
 
-    public void loadTexture2() {
-        texture = loadTexture(impression.getImpression());
+    public void loadTexture2()
+    {
+        //texture = loadTexture(impression.getImpression());
     }
 
     public int loadTexture(Bitmap bitmap) {

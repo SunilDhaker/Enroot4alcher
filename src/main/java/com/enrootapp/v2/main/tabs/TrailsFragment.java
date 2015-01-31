@@ -47,7 +47,7 @@ public class TrailsFragment extends EnrootFragment {
             }
         });
         rv.setHasFixedSize(true);
-        rv.setAdapter(new TrailsAdapter(mApp.getTrail()));
+       // rv.setAdapter(new TrailsAdapter(mApp.getTrail()));
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         return v;
     }

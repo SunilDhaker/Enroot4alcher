@@ -87,6 +87,7 @@ public class SelectLocationActivity extends EnrootActivity implements LocationLi
         Toast.makeText(getApplication(), "Loading location nearby ", Toast.LENGTH_LONG).show();
         comb.clear();
         fetchFourSquare(EnrootActivity.currentLoc);
+        fetchParse(EnrootActivity.currentLoc);
     }
 
 

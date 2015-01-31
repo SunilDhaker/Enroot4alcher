@@ -95,7 +95,7 @@ public class TrailsAdapter extends RecyclerView.Adapter<TrailsAdapter.ViewHolder
             //TODO: change to loading icon
 
             Impression i  = impression ;
-            impressionImgae.setImageBitmap(impression.getImage(context));
+            //impressionImgae.setImageBitmap(impression.getImage(context));
           /*  Resources.getImpressionImageById(context, impression.getObjectId(), new Resources.OnImpressionImageReceived() {
                 @Override
                 public void onReceived(Bitmap bmp) {
@@ -105,23 +105,7 @@ public class TrailsAdapter extends RecyclerView.Adapter<TrailsAdapter.ViewHolder
             });*/
 
 
-            HashSet<Impression.Discover> discovers = impression.getDiscoverers();
-            int size = discovers.size();
-            viewCounter.setText("" + size);
-            GeoName geoname = EnrootApp.getInstance().getGeonameCache().get(impression.getGeoname());
-
-            if (geoname == null)
-                locationStamp1.setText("Loading.."); //todo should be there
-            else locationStamp1.setText(geoname.getName());
-
-            locationStamp2.setVisibility(View.INVISIBLE);
-            if (size != 0) {
-                taggedPeople.setText(discovers.iterator().next() + " " + ((size > 1) ? (size - 1) + "+" : ""));
-            } else {
-                divider.setVisibility(View.INVISIBLE);
-                discoverContainer.setVisibility(View.INVISIBLE);
-            }
-            timestamp.setText(DateUtil.elapsedTime(new Date().getTime() - impression.getTimestamp().getTime()));
+//         D   timestamp.setText(DateUtil.elapsedTime(new Date().getTime() - impression.getTimestamp().getTime()));
         }
     }
 

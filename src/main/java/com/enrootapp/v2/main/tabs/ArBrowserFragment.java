@@ -81,18 +81,12 @@ public class ArBrowserFragment extends Fragment implements OrientationManager.On
             @Override
             public void run() {
                 if (System.currentTimeMillis() - lastTouchTime > 10000) {
-//                    lastTouchTime = System.currentTimeMillis();
-//                    if (flagControlVisible && doesHideControl) {
-//                        hideControls();
-//                        flagControlVisible = false;
-//                    }
-                    Impression imp = new Impression();
-                    User u = new User();
-                    u.setFbName("test");
-                    Bitmap btmp;
-                    imp.setImpression(TestUtil.getArImage(imp.getImpression(), u, getActivity()));
+                    lastTouchTime = System.currentTimeMillis();
+                    if (flagControlVisible && doesHideControl) {
+                        hideControls();
+                        flagControlVisible = false;
+                    }
 
-                    ar.addImpreession(imp);
                 }
             }
         };
@@ -104,9 +98,7 @@ public class ArBrowserFragment extends Fragment implements OrientationManager.On
     @Override
     public void onStart() {
         super.onStart();
-        Impression imp = new Impression();
-        imp.setImpression(BitmapFactory.decodeResource(getResources(), (R.drawable.mypic)));
-        ar.addImpreession(imp);
+
     }
 
     @Override

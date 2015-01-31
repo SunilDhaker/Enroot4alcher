@@ -3,6 +3,7 @@ package com.enrootapp.v2.main.data;
 import android.graphics.Bitmap;
 
 import com.enrootapp.v2.main.util.FileUtils;
+import com.koushikdutta.ion.Ion;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -20,19 +21,10 @@ import java.util.Date;
 public class Impression extends ParseObject implements Comparable<Impression> {
 
     private static final String TAG = "Impression";
-    public static int DOWNLOADED = 0, DOWNLOADING = 1, NOT_DOWNLOADED = 2;
-    public int status = NOT_DOWNLOADED;
-
 
     public Impression() {
 
     }
-
-
-    public File getLocalFile() {
-        return FileUtils.getFile("imp", getObjectId());
-    }
-
 
     public Date getTimestamp() {
         return getDate("timestamp");
@@ -92,6 +84,13 @@ public class Impression extends ParseObject implements Comparable<Impression> {
         put("impression" , impression);
     }
 
+    public void isFromFacebook(boolean b) {
+        put("isFromFacebook", b);
+    }
+
+    public boolean isFromFacebook() {
+        return getBoolean("isFromFacebook");
+    }
 
     public String getOwnerName() {
         return getString("owner_name");
@@ -103,6 +102,8 @@ public class Impression extends ParseObject implements Comparable<Impression> {
 
     }
 
+
+
     public String getOwnerId() {
         return getString("owner_id");
     }
@@ -111,6 +112,14 @@ public class Impression extends ParseObject implements Comparable<Impression> {
         put("owner_id" , ownerName);
         ParseFile ff ;
 
+    }
+
+    public void setImageUrl(String url) {
+        put("imageUrl", url);
+    }
+
+    public String getImageUrl() {
+        return getString("imageUrl");
     }
 
 

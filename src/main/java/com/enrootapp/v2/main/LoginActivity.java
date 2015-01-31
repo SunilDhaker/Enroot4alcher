@@ -2,19 +2,33 @@ package com.enrootapp.v2.main;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInstaller;
 import android.os.Bundle;
 import android.view.View;
 
 import com.enrootapp.v2.main.app.EnrootActivity;
+import com.enrootapp.v2.main.app.EnrootApp;
+import com.enrootapp.v2.main.data.GeoName;
+import com.enrootapp.v2.main.data.Impression;
 import com.enrootapp.v2.main.util.Logger;
+import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -28,63 +42,32 @@ public class LoginActivity extends EnrootActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login3);
+        setContentView(R.layout.login2);
         getSupportActionBar().hide();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        findViewById(R.id.login_button).setOnClickListener(new View.OnClickListener() {
+        /*findViewById(R.id.login_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ParseFacebookUtils.logIn(Arrays.asList("email", ParseFacebookUtils.Permissions.Friends.ABOUT_ME),
+                ParseFacebookUtils.logIn(Arrays.asList("email", ParseFacebookUtils.Permissions.Friends.ABOUT_ME , "user_photos"),
                         LoginActivity.this, new LogInCallback() {
                             @Override
                             public void done(ParseUser user, ParseException err) {
-                                // Code to handle login.
-
+                                if (err != null) Logger.d(TAG, "Error in parse login", err);
+                                else {
+                                    if (user != null) {
+                                        ;
+                                    } else {
+                                        Logger.d(TAG, "User is null.");
+                                    }
+                                }
                             }
                         });
             }
-        });
-    }
-
-    private static void getFacebookIdInBackground() {
-        Request.executeMeRequestAsync(ParseFacebookUtils.getSession(), new Request.GraphUserCallback() {
-            @Override
-            public void onCompleted(GraphUser user, Response response) {
-                if (user != null) {
-                    ParseUser.getCurrentUser().put("fbId", user.getId());
-                    ParseUser.getCurrentUser().saveInBackground();
-                }
-            }
-        });
-
-
-    }
-
-    public static void getInfo(){
-        Request.newMeRequest(ParseFacebookUtils.getSession(), new Request.GraphUserCallback() {
-            @Override
-            public void onCompleted(GraphUser user, Response response) {
-                if (user != null) {
-                    // Display the parsed user info
-                    Logger.d(TAG, "Response : " + response);
-                    Logger.d(TAG, "UserID : " + user.getId());
-                    Logger.d(TAG, "User FirstName: " + user.getName());
-
-                    ParseUser.getCurrentUser().put("fbId", user.getId());
-                    ParseUser.getCurrentUser().put("fbName" , user.getFirstName());
-                    ParseUser.getCurrentUser().saveInBackground();
-
-                   }
-            }
-
-        }).executeAsync();
+        });*/
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
-    }
+
+
 }
