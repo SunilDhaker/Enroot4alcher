@@ -6,9 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.enrootapp.v2.main.data.Impression;
+import com.enrootapp.v2.main.util.DateUtil;
+import com.enrootapp.v2.main.util.TestUtil;
 
 import java.util.ArrayList;
 
@@ -19,13 +22,16 @@ import java.util.ArrayList;
 public class StaticBrowserAdapter extends RecyclerView.Adapter<StaticBrowserAdapter.ViewHolder> {
     public RecyclerView rclView;
     public Context context;
-    private ArrayList<Impression> mDataset;
-    private ArrayList<Impression> searchedData;
-    private ArrayList<Impression> filteredData;
+    private ArrayList<Impression> mDataset = new ArrayList<>();
+    private ArrayList<Impression> searchedData =new ArrayList<>();
+    private ArrayList<Impression> filteredData = new ArrayList<>();
 
-    public StaticBrowserAdapter(RecyclerView rclView, Context context) {
-
+    public StaticBrowserAdapter(RecyclerView rclView, Context context, ArrayList<Impression> imressionsAt) {
+         this.context = context ;
         this.rclView = rclView;
+        mDataset = imressionsAt ;
+        searchedData.addAll(mDataset);
+
     }
 
     @Override
@@ -40,13 +46,13 @@ public class StaticBrowserAdapter extends RecyclerView.Adapter<StaticBrowserAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // holder.infoText.setText(mDataset[position]);
+         holder.render(searchedData.get(position) , context);
 
     }
 
     @Override
     public int getItemCount() {
-        return 20;//TODO;
+        return searchedData.size();//TODO;
     }
 
     public void search(String query) {
@@ -56,7 +62,7 @@ public class StaticBrowserAdapter extends RecyclerView.Adapter<StaticBrowserAdap
             searchedData.clear();
 
             for (Impression i : mDataset) {
-                if (i.getCaption().contains(query)) //TODO add searching on people also
+                if (i.getCaption().toLowerCase().contains(query.toLowerCase()) || i.getOwnerName().toLowerCase().contains(query.toLowerCase()))
                     searchedData.add(i);
             }
         }
@@ -66,12 +72,27 @@ public class StaticBrowserAdapter extends RecyclerView.Adapter<StaticBrowserAdap
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView infoText;
+        public TextView timestamp , username , caption;
+        ImageView impressionImage  , userlogo;
+
+
 
         public ViewHolder(View v) {
             super(v);
             //infoText = (TextView) v.findViewById(R.id.cardview_impression);
-            // infoText.setWidth;
+            userlogo = (ImageView) v.findViewById(R.id.userlogo);
+            impressionImage = (ImageView) v.findViewById(R.id.cardview_impression);
+            username = (TextView) v.findViewById(R.id.static_view_username);
+            timestamp = (TextView) v.findViewById(R.id.static_view_timestap);
+            caption = (TextView) v.findViewById(R.id.capation);
+
+        }
+        public void render(Impression imp , Context c){
+             impressionImage.setImageBitmap(TestUtil.getObjectImage(imp ,c ));
+             caption.setText(imp.getCaption());
+             username.setText(imp.getOwnerName());
+             userlogo.setImageBitmap(TestUtil.getProfileImage(imp , c));
+            timestamp.setText(DateUtil.elapsedTime(imp.getTimestamp().getTime()));
         }
     }
 

@@ -20,7 +20,7 @@ public class EnrootApp extends Application {
     public static String CURRENT_GEOTAG_SELECTION;
 
     public ArrayList<Impression> imressionsAt  = new ArrayList<Impression>();
-   public  ArrayList<Impression> myTrails =new ArrayList<Impression>();
+   public  ArrayList<Impression> myTrails = new ArrayList<Impression>();
     public ArrayList<GeoName> nearbyGeoPoints = new ArrayList<GeoName>();
     public ArrayList<OnDataChangeListner> listners = new ArrayList<>();
 

@@ -192,7 +192,7 @@ public class EnrootActivity extends ActionBarActivity implements LocationListene
 
         ParseQuery<Impression> parseQuery =  ParseQuery.getQuery(Impression.class);
         parseQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
-        parseQuery.whereEqualTo("geoname" , gn);
+        //parseQuery.whereEqualTo("geoname" , gn);
         parseQuery.addDescendingOrder("timestamp");
         parseQuery.findInBackground(new FindCallback<Impression>() {
             @Override

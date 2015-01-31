@@ -7,6 +7,7 @@ import android.opengl.GLES20;
 
 import com.enrootapp.v2.main.data.Impression;
 import com.enrootapp.v2.main.util.Logger;
+import com.enrootapp.v2.main.util.TestUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -225,6 +226,8 @@ public class ImpressionTexture {
     public void loadTexture2()
     {
         //texture = loadTexture(impression.getImpression());
+//        TestUtil.getObjectImage(impression , c)
+//        texture = loadTexture();
     }
 
     public int loadTexture(Bitmap bitmap) {

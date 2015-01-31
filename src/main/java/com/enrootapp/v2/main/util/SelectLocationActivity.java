@@ -38,7 +38,7 @@ import java.util.List;
 /**
  * Created by sdhaker on 23-01-2015.
  */
-public class SelectLocationActivity extends EnrootActivity implements LocationListener {
+public class SelectLocationActivity extends EnrootActivity {
 
     private static final int MIN_TIME = 100;
     private static final int MIN_DISTANCE = 100;
@@ -86,8 +86,7 @@ public class SelectLocationActivity extends EnrootActivity implements LocationLi
 
         Toast.makeText(getApplication(), "Loading location nearby ", Toast.LENGTH_LONG).show();
         comb.clear();
-        fetchFourSquare(EnrootActivity.currentLoc);
-        fetchParse(EnrootActivity.currentLoc);
+
     }
 
 
@@ -123,12 +122,16 @@ public class SelectLocationActivity extends EnrootActivity implements LocationLi
                                 loc.setCoordinates(new ParseGeoPoint(ll.latitude , ll.longitude));
                                 Log.d(TAG, ll.toString());
                                 comb.put(loc.getObjectId(), loc);
+                                locs.add(loc);
+                                Log.d(TAG , comb.toString());
                             }
 
-                            locs = new ArrayList<GeoName>(comb.values());
-                            mAdapter.mDataset = locs;
-                            mAdapter.notifyDataSetChanged();
-                            isFoursquareReturned = true;
+                            if(mAdapter !=null) {
+                                mAdapter.mDataset.clear();
+                                mAdapter.mDataset.addAll(locs);
+                                mAdapter.notifyDataSetChanged();
+                                isFoursquareReturned = true;
+                            }
 
                         } else {
                             Logger.d(TAG, "FourSquare exception.", e);
@@ -146,17 +149,33 @@ public class SelectLocationActivity extends EnrootActivity implements LocationLi
         query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.whereWithinKilometers("coordinates" ,new ParseGeoPoint(location.getLatitude() , location.getLongitude()) , 0.5 );
 
-        query.findInBackground(new FindCallback<GeoName>() {
-            @Override
-            public void done(List<GeoName> geoNames, ParseException e) {
-               if(e == null){
-                synchronized (comb) {
-                    for (GeoName g : geoNames) {
-                        comb.put(g.getgId(), g);
-                    }
-                }
-            }}
-        });
+//        query.findInBackground(new FindCallback<GeoName>() {
+//            @Override
+//            public void done(List<GeoName> geoNames, ParseException e) {
+//                if (e == null) {
+//                    synchronized (comb) {
+//                        for (GeoName g : geoNames) {
+//                            comb.put(g.getgId(), g);
+//                        }
+//                    }
+//                }
+//            }
+//        });
+//        locs = new ArrayList<GeoName>(comb.values());
+//        if(mAdapter !=null) {
+//            mAdapter.mDataset = new ArrayList<GeoName>();
+//            mAdapter.mDataset.addAll(comb.values());
+//            mAdapter.notifyDataSetChanged();
+//            isFoursquareReturned = true;
+//        }
     }
 
+
+    @Override
+    public void onLocationChanged(Location location) {
+        super.onLocationChanged(location);
+
+        fetchFourSquare(EnrootActivity.currentLoc);
+        //fetchParse(EnrootActivity.currentLoc);
+    }
 }

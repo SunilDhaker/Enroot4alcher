@@ -94,7 +94,7 @@ public class LoginFragment extends EnrootFragment {
                         EnrootApp.getInstance().setFbId(user.getId());
                         EnrootApp.getInstance().setFbName(user.getName());
 
-                        File f = FileUtils.getFile("login__token");
+                        File f = FileUtils.getFile("login__Ztoken");
                         if(!f.exists()) {
                             try {
                                 f.createNewFile();

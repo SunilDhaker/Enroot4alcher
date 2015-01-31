@@ -25,6 +25,7 @@
             <ImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:id="@+id/userlogo"
                 android:src="@drawable/logo" />
 
             <TextView
@@ -33,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dp"
-                android:text="Gautam Krishna"
+                android:text=" "
                 android:textColor="#727272"
                 android:textSize="20dp" />
 
@@ -83,7 +84,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:src="@drawable/mypic" />
+                    android:src="@drawable/logo" />
 
                 <!--<FrameLayout-->
                 <!--android:layout_width="fill_parent"-->
@@ -110,6 +111,7 @@
                         android:layout_centerVertical="true"
                         android:gravity="center_horizontal"
                         android:padding="10dp"
+                        android:id="@+id/capation"
                         android:text="Had an ausome time with you mate "
                         android:textColor="#727272" />
 

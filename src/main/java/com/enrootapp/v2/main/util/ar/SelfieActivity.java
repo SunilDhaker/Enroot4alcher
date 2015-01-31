@@ -14,6 +14,7 @@ import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.hardware.Camera;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
@@ -231,8 +232,8 @@ public class SelfieActivity extends EnrootActivity implements OrientationManager
 
 
         
-        downloadMyTrails();
-        downloadImpressionAt(mApp.getCurrentGeoname());
+       // downloadMyTrails();
+        //downloadImpressionAt(mApp.getCurrentGeoname());
         
 
     }
@@ -242,9 +243,19 @@ public class SelfieActivity extends EnrootActivity implements OrientationManager
     @Override
     public void onResume() {
 
+
+       // if(CURENT_SCREEN == FEED_BACK_SCREEN)
+
         super.onResume();
         mGLSurfaceView.onResume();
-        setSelfieScreen();
+        if (CURENT_SCREEN == FEED_BACK_SCREEN){
+            CURENT_SCREEN = SELFIE_SCREEN ;
+            setSelfieScreen();
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+            Toast.makeText(this , "on resume "  , Toast.LENGTH_LONG);
+        }
     }
 
     @Override
@@ -307,13 +318,16 @@ public class SelfieActivity extends EnrootActivity implements OrientationManager
                 break;
             case R.id.bottom_bar_btn_next:
                 if (CURENT_SCREEN == FEED_BACK_SCREEN) {
-                    setTagAndShareScreen();
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.parse("file://" + "/sdcard/enroot/test.jpg"), "image/*");
+                    startActivity(intent);
                     break;
                 }
                 if (CURENT_SCREEN == TAG_SCREEN) {
                     imp = new Impression();
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    mApp.selfie.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    mApp.selfie.compress(Bitmap.CompressFormat.JPEG, 20, stream);
                     // get byte array here
                     byte[] bytearray= stream.toByteArray();
                     ParseFile pf = new ParseFile("pp.jpg" ,bytearray);
@@ -332,6 +346,8 @@ public class SelfieActivity extends EnrootActivity implements OrientationManager
                             imp.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
+                                    mApp.myTrails.add(imp);
+                                    mApp.imressionsAt.add(imp);
                                    if(e!= null)
                                     Log.d(TAG , e.getMessage());
                                 }
@@ -412,7 +428,7 @@ public class SelfieActivity extends EnrootActivity implements OrientationManager
         emptyView.setVisibility(View.VISIBLE);
         controlContainer.setVisibility(View.GONE);
         actionBarTag.setVisibility(View.VISIBLE);
-        tagAndShareText.setText("Share");
+        tagAndShareText.setText("View in Gallery");
         capationContainer.setVisibility(View.VISIBLE);
         //forwordButton.setVisibility(View.VISIBLE);
         actionBarLocation.setVisibility(View.VISIBLE);
@@ -437,7 +453,7 @@ public class SelfieActivity extends EnrootActivity implements OrientationManager
         bottomBarContainer.setVisibility(View.VISIBLE);
         editLocationContainer.setVisibility(View.GONE);
         // forwordButton.setVisibility(View.GONE);
-        tagAndShareText.setText("Tag And Share");
+        tagAndShareText.setText("View in Gallery ");
         backButton.setImageDrawable(getResources().getDrawable(R.drawable.cross));
         actionBarTag.setVisibility(View.GONE);
         capationContainer.setVisibility(View.GONE);
@@ -461,7 +477,7 @@ public class SelfieActivity extends EnrootActivity implements OrientationManager
         controlContainer.setVisibility(View.VISIBLE);
         actionBarLocation.setVisibility(View.VISIBLE);
 
-        actionBarLocation.setText(mApp.getCurrentGeoname().getName());
+        actionBarLocation.setText("Alcher IITG");
     }
 
 
@@ -514,5 +530,16 @@ public class SelfieActivity extends EnrootActivity implements OrientationManager
         }
     }
 
-
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (CURENT_SCREEN == FEED_BACK_SCREEN){
+//            CURENT_SCREEN = SELFIE_SCREEN ;
+//            setSelfieScreen();
+//            Toast.makeText(this , "onactivity result "  , Toast.LENGTH_LONG);
+//            recreate();
+//        }
+//
+//    }
 }

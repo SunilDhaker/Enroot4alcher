@@ -181,4 +181,18 @@ public class TestUtil {
                 .write(FileUtils.getFile("_usr" + fbId))
                 ;
     }
+
+
+
+
+
+    public static Bitmap getProfileImage(Impression impression, Context context) {
+
+        File f = FileUtils.getFile("_imp" + impression.getObjectId());
+        if (f.exists()) {
+            return GetBitmapClippedCircle(BitmapFactory.decodeFile(f.getAbsolutePath()));
+        } else {
+           return GetBitmapClippedCircle(BitmapFactory.decodeResource(context.getResources() , (R.drawable.shutter)));
+        }
+    }
 }

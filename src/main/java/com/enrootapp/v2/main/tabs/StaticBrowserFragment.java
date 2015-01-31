@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.enrootapp.v2.main.MainActivity;
 import com.enrootapp.v2.main.R;
 import com.enrootapp.v2.main.StaticBrowserAdapter;
+import com.enrootapp.v2.main.app.EnrootApp;
 import com.enrootapp.v2.main.util.SelectLocationActivity;
 import com.enrootapp.v2.main.util.ar.SelfieActivity;
 
@@ -27,7 +28,7 @@ import com.enrootapp.v2.main.util.ar.SelfieActivity;
  * Created by sdhaker on 27-01-2015.
  */
 
-public class StaticBrowserFragment extends Fragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, TextWatcher {
+public class StaticBrowserFragment extends Fragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, TextWatcher , EnrootApp.OnDataChangeListner{
 
     TextView actionBarLocationtext;
     View actionBarLocation;
@@ -47,7 +48,7 @@ public class StaticBrowserFragment extends Fragment implements View.OnClickListe
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new StaticBrowserAdapter(mRecyclerView, getActivity());
+        mAdapter = new StaticBrowserAdapter(mRecyclerView, getActivity(), EnrootApp.getInstance().imressionsAt);
         mRecyclerView.setAdapter(mAdapter);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -128,5 +129,10 @@ public class StaticBrowserFragment extends Fragment implements View.OnClickListe
     @Override
     public void afterTextChanged(Editable s) {
         mAdapter.search(s.toString());
+    }
+
+    @Override
+    public void onDtaChange() {
+        mAdapter.notifyDataSetChanged();
     }
 }

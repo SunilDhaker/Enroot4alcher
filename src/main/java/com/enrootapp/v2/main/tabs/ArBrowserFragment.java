@@ -110,8 +110,11 @@ public class ArBrowserFragment extends Fragment implements OrientationManager.On
 
     private void addMax20Texture() {
 
-        for(Impression i : EnrootApp.getInstance().imressionsAt){
+        for(int i = 0 ; i  < EnrootApp.getInstance().imressionsAt.size() ; i++){
+             if(TestUtil.getProfileImage(EnrootApp.getInstance().imressionsAt.get(i) , getActivity()) != null){
 
+               ar.addImpreession(EnrootApp.getInstance().imressionsAt.get(i));
+             }
         }
     }
 
@@ -214,6 +217,7 @@ public class ArBrowserFragment extends Fragment implements OrientationManager.On
     @Override
     public void onDtaChange() {
 
+        addMax20Texture();
     }
 
 
