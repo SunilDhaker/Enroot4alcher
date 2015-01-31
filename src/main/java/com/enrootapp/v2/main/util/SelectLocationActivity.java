@@ -65,24 +65,24 @@ public class SelectLocationActivity extends EnrootActivity implements LocationLi
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rv.setLayoutManager(mLayoutManager);
         // getRequestedOrientation(ORIent)
-        rv.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                View v = rv.findChildViewUnder(e.getX(), e.getY());
-                if (v != null) {
-                    int pos = rv.getChildPosition(v);
-                    synchronized (locs) {
-                        selectLoc(pos);
-                    }
-                }
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
-            }
-        });
+////        rv.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+////            @Override
+////            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+////                View v = rv.findChildViewUnder(e.getX(), e.getY());
+////                if (v != null) {
+////                    int pos = rv.getChildPosition(v);
+////                    synchronized (locs) {
+////                        selectLoc(pos);
+////                    }
+////                }
+////                return false;
+////            }
+//
+//            @Override
+//            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+//
+//            }
+//        });
 
         Toast.makeText(getApplication(), "Loading location nearby ", Toast.LENGTH_LONG).show();
         comb.clear();
@@ -91,8 +91,10 @@ public class SelectLocationActivity extends EnrootActivity implements LocationLi
     }
 
 
-    private void selectLoc(int pos) {
+    public void selectLoc(GeoName pos) {
 
+        pos.saveInBackground();
+        mApp.setCurrentGeoname(pos);
         Intent i = new Intent(this, SelfieActivity.class);
         startActivity(i);
     }
@@ -100,7 +102,7 @@ public class SelectLocationActivity extends EnrootActivity implements LocationLi
 
     public void fetchFourSquare(final Location location) {
         Ion.with(this)
-                .load("https://api.foursquare.com/v2/venues/search?client_id=DIQIR4HISXC0XWJ4K0JTRC1OX5YTUXZQWO3JSRKNT52GAI2X&client_secret=F0J4P4EVD0O0OFODCI5DVJOD1WQ1N2MUFDYRPW5OHVRCXIMT&v=20130815&ll=" + location.getLatitude() + "," + location.getLongitude() + "&radius=25")
+                .load("https://api.foursquare.com/v2/venues/search?client_id=DIQIR4HISXC0XWJ4K0JTRC1OX5YTUXZQWO3JSRKNT52GAI2X&client_secret=F0J4P4EVD0O0OFODCI5DVJOD1WQ1N2MUFDYRPW5OHVRCXIMT&v=20130815&ll=" + location.getLatitude() + "," + location.getLongitude() + "&radius=500")
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
@@ -147,12 +149,13 @@ public class SelectLocationActivity extends EnrootActivity implements LocationLi
         query.findInBackground(new FindCallback<GeoName>() {
             @Override
             public void done(List<GeoName> geoNames, ParseException e) {
+               if(e == null){
                 synchronized (comb) {
                     for (GeoName g : geoNames) {
                         comb.put(g.getId(), g);
                     }
                 }
-            }
+            }}
         });
     }
 

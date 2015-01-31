@@ -123,13 +123,5 @@ public class Impression extends ParseObject implements Comparable<Impression> {
     }
 
 
-    public ParseUser getOwner() {
-        return getParseUser("owner");
-    }
-
-    public void setOwner(ParseUser owner) {
-        put("owner" , owner);
-
-    }
 
 }

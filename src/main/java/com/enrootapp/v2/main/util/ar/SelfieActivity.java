@@ -224,6 +224,9 @@ public class SelfieActivity extends EnrootActivity implements OrientationManager
 //                Logger.d(TAG, "YOUR" + " image downloaded");
 //            }
 //        });
+
+
+
     }
 
 
@@ -310,14 +313,20 @@ public class SelfieActivity extends EnrootActivity implements OrientationManager
                     imp.setCaption(capationText.getText().toString());
                     imp.setOwnerName(mApp.fbName);
                     imp.setTimestamp(new Date(System.currentTimeMillis()));
-                    imp.setOwner(ParseUser.getCurrentUser());
+                    //imp.setOwner(ParseUser.getCurrentUser());
                     imp.setOwnerId(mApp.fbId);
                     imp.setGeoname(mApp.currentGeoname);
                     mApp.imp = imp;
                     pf.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
-                            imp.saveInBackground();
+                            imp.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                   if(e!= null)
+                                    Log.d(TAG , e.getMessage());
+                                }
+                            });
                             if(e == null)Log.d(TAG, "Your impression is saved ");
                             else runOnUiThread(new Runnable() {
                                 @Override
@@ -442,6 +451,8 @@ public class SelfieActivity extends EnrootActivity implements OrientationManager
         capationContainer.setVisibility(View.GONE);
         controlContainer.setVisibility(View.VISIBLE);
         actionBarLocation.setVisibility(View.VISIBLE);
+
+        actionBarLocation.setText(mApp.getCurrentGeoname().getName());
     }
 
 

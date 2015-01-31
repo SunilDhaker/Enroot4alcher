@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import com.enrootapp.v2.main.data.GeoName;
 import com.enrootapp.v2.main.data.Impression;
 import com.parse.Parse;
+import com.parse.ParseObject;
 
 /**
  * Created by rmuttineni on 15/01/2015.
@@ -15,8 +16,8 @@ public class EnrootApp extends Application {
     public static String CURRENT_GEOTAG_SELECTION;
 
 
-    public String fbId ;
-    public String fbName;
+    public String fbId  = "fbid123";
+    public String fbName ="fbname123";
     public static Bitmap selfie ;
     public Impression imp ;
 
@@ -75,6 +76,8 @@ public class EnrootApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+            ParseObject.registerSubclass(GeoName.class);
+        ParseObject.registerSubclass(Impression.class);
             Parse.initialize(this, "VKipN8qKOfPIzadjfVDcztnNXdUKr8J0IyFRtiLb", "DX7OTEIeGTQsbJ6Vf7Dj1xlyNhfD1vr2av00ZqZQ");
     }
 }

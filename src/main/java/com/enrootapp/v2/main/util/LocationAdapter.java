@@ -30,8 +30,9 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.render(mDataset.get(position));
+
     }
 
     @Override
@@ -47,11 +48,19 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         private TextView locationToDiscover;
         private CheckBox selectLocation;
         private ImageView locationLogo;
+        private View v1 ;
+        private GeoName g ;
 
-        public ViewHolder(View v, Context context) {
+        public ViewHolder(View v, final Context context) {
             super(v);
             this.context = context;
-
+            v1 = v ;
+            v1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((SelectLocationActivity)context).selectLoc(g);
+                }
+            });
             locationName = (TextView) v.findViewById(R.id.location_item_name);
             locationImressions = (TextView) v.findViewById(R.id.location_item_cont);
             locationToDiscover = (TextView) v.findViewById(R.id.location_item_to_discover);
@@ -59,7 +68,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         }
 
         public void render(GeoName loc) {
-
+             g = loc ;
             String nam = loc.getName();
             nam.trim();
             locationName.setText(loc.getName());
