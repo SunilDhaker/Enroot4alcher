@@ -3,6 +3,7 @@ package com.enrootapp.v2.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,9 @@ import com.enrootapp.v2.main.app.EnrootApp;
 import com.enrootapp.v2.main.app.EnrootFragment;
 import com.enrootapp.v2.main.data.GeoName;
 import com.enrootapp.v2.main.data.Impression;
+import com.enrootapp.v2.main.util.FileUtils;
 import com.enrootapp.v2.main.util.Logger;
+import com.enrootapp.v2.main.util.SelectLocationActivity;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
@@ -31,6 +34,8 @@ import com.parse.SaveCallback;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,7 +72,7 @@ public class LoginFragment extends EnrootFragment {
         waiting.setVisibility(View.GONE);
         authButton.setFragment(this);
         authButton.setReadPermissions(Arrays.asList("email", "user_hometown",
-                 "user_tagged_places", "user_location", "user_photos"));
+                "user_tagged_places", "user_location", "user_photos", "user_friends"));
         return view;
     }
 
@@ -75,61 +80,72 @@ public class LoginFragment extends EnrootFragment {
         Logger.d(TAG, "onSessionStateChange");
         if (state.isOpened() ) {
             Logger.d(TAG, "Logged in...");
-            if (ParseUser.getCurrentUser() == null) {
-                getInfo(session);
-            }
+            Request.newMeRequest(session, new Request.GraphUserCallback() {
+                @Override
+                public void onCompleted(GraphUser user, Response response) {
+                    if (user != null) {
+                        // Display the parsed user info
+                        Logger.d(TAG, "Response : " + response);
+                        Logger.d(TAG, "UserID : " + user.getId());
+                        Logger.d(TAG, "User FirstName: " + user.getName());
 
+                        mApp.setFbId(user.getId());
+                        mApp.setFbName(user.getName());
+                        EnrootApp.getInstance().setFbId(user.getId());
+                        EnrootApp.getInstance().setFbName(user.getName());
 
-
+                        File f = FileUtils.getFile("login__token");
+                        if(!f.exists()) {
+                            try {
+                                f.createNewFile();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            getFbImpressions(session);
+                        }else {
+                            Intent i = new Intent(getActivity() , SelectLocationActivity.class);
+                            getActivity().startActivity(i);
+                        }
+                    }
+                }
+            }).executeAsync();
         }
     }
 
-    public void getInfo(final Session session){
-        Request.newMeRequest(session, new Request.GraphUserCallback() {
-            @Override
-            public void onCompleted(GraphUser user, Response response) {
-                if (user != null) {
-                    // Display the parsed user info
-                    Logger.d(TAG, "Response : " + response);
-                    Logger.d(TAG, "UserID : " + user.getId());
-                    Logger.d(TAG, "User FirstName: " + user.getName());
-
-                    EnrootApp.getInstance().setFbId(user.getId());
-                    EnrootApp.getInstance().setFbName(user.getName());
-                    getFbImpressions(session);
-                }
-            }
-        }).executeAsync();
-    }
-
     public void getFbImpressions(Session session) {
+        Bundle parameters = new Bundle(1);
+        parameters.putString("fields","picture,place,name");
         new Request(
                 session,
-                "me/photos?fields=picture,place,name",
-                null,
+                "me/photos",
+                parameters,
                 HttpMethod.GET,
                 new Request.Callback() {
                     @Override
                     public void onCompleted(Response response) {
                         try {
-
+                            Logger.d(TAG , response.toString()  + response.getRawResponse());
                             GraphObject go = response.getGraphObject();
                             JSONObject jso = go.getInnerJSONObject();
                             JSONArray data = jso.getJSONArray("data");
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject photo = data.getJSONObject(i);
+                                if (!photo.has("place")) continue;
                                 JSONObject place = photo.getJSONObject("place");
                                 String name = place.getString("name");
+                                Log.d(TAG, name);
                                 JSONObject location = place.getJSONObject("location");
                                 double latitude = location.getDouble("latitude");
                                 double longitude = location.getDouble("longitude");
                                 String id = place.getString("id");
+                                Log.d(TAG,"id  "+ id);
                                 //Create the impressions here
-                                String caption = photo.getString("caption");
+                                String caption = "";
+                                if (photo.has("name")) caption = photo.getString("name");
                                 String image = photo.getString("picture");
                                 Impression imp = new Impression();
-                               // ParseUser current = ParseUser.getCurrentUser();
-                               // imp.setOwner(current);
+                                // ParseUser current = ParseUser.getCurrentUser();
+                                // imp.setOwner(current);
                                 imp.setOwnerId(mApp.getFbId());
                                 imp.setOwnerName(mApp.getFbName());
                                 imp.setDirection((int) (Math.random() * 360));
@@ -141,36 +157,45 @@ public class LoginFragment extends EnrootFragment {
 
                                 GeoName g = new GeoName();
                                 g.setName(name);
-                                g.setId(id);
+                                g.setgId(id);
                                 g.setCoordinates(new ParseGeoPoint(latitude, longitude));
                                 imp.setGeoname(g);
                                 imps.add(imp);
                                 gname.add(g);
                             }
 
-                            ParseUser.saveAllInBackground(gname, new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    if (e != null) Logger.d(TAG, "Failed to save geonames.", e);
-                                    else {
-                                        ParseUser.saveAllInBackground(imps, new SaveCallback() {
-                                            @Override
-                                            public void done(ParseException e) {
-                                                if (e != null) Logger.d(TAG, "Failed to save geonames.", e);
-                                                else {
-                                                    Logger.d(TAG, "Successfully saved all impressions + geonames.");
-                                                }
-                                            }
-                                        });
-                                    }
-                                }
-                            });
+
                         } catch (Exception e) {
                             Logger.d(TAG, "Failed to create impression from facebook.", e);
+                            File f = FileUtils.getFile("login__token");
+                            f.delete();
                         }
+
+                        ParseUser.saveAllInBackground(gname, new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e != null) Logger.d(TAG, "Failed to save geonames.", e);
+                                else {
+                                    ParseUser.saveAllInBackground(imps, new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            if (e != null) Logger.d(TAG, "Failed to save geonames.", e);
+                                            else {
+                                                Logger.d(TAG, "Successfully saved all impressions + geonames.");
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+
+
+                        Intent i = new Intent(getActivity() , SelectLocationActivity.class);
+                        getActivity().startActivity(i);
                     }
                 }
         ).executeAsync();
+
 
     }
 

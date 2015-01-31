@@ -14,9 +14,11 @@ import android.widget.LinearLayout;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.enrootapp.v2.main.app.EnrootActivity;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
 
-public class MainActivity extends EnrootActivity implements View.OnClickListener {
+public class MainActivity extends EnrootActivity implements View.OnClickListener  , FutureCallback{
 
 
     public static final int AR = 0, DYNAMIC = 1;
@@ -182,6 +184,14 @@ public class MainActivity extends EnrootActivity implements View.OnClickListener
     public void notifyBrowserChanged() {
         if (EnrootActivity.isCompassAvailable)
             mSectionsPagerAdapter.switchBrowser();
+    }
+
+
+    @Override
+    public void onCompleted(Exception e, Object result) {
+        //TODO update current view
+
+
     }
 
 

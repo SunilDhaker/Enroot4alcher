@@ -11,8 +11,16 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
 
+import com.enrootapp.v2.main.data.GeoName;
+import com.enrootapp.v2.main.data.Impression;
 import com.enrootapp.v2.main.util.Logger;
+import com.enrootapp.v2.main.util.TestUtil;
 import com.enrootapp.v2.main.util.ar.MyData;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+
+import java.util.List;
 
 /**
  * Created by rmuttineni on 15/01/2015.
@@ -175,6 +183,56 @@ public class EnrootActivity extends ActionBarActivity implements LocationListene
     public static interface OnLocationChangedBy100m {
 
         public void onLocationChangedBy100m(Location location);
+    }
+
+
+
+
+    public void downloadImpressionAt(GeoName gn) {
+
+        ParseQuery<Impression> parseQuery =  ParseQuery.getQuery(Impression.class);
+        parseQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+        parseQuery.whereEqualTo("geoname" , gn);
+        parseQuery.addDescendingOrder("timestamp");
+        parseQuery.findInBackground(new FindCallback<Impression>() {
+            @Override
+            public void done(List<Impression> impressions, ParseException e) {
+                if(e == null){
+                    for(Impression im : impressions){
+                        mApp.imressionsAt.add(im);
+                    }
+                    mApp.datachanged();
+
+                }
+            }
+        });
+    }
+
+
+
+    public void downloadMyTrails() {
+        ParseQuery<Impression> parseQuery =  ParseQuery.getQuery(Impression.class);
+        parseQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+        parseQuery.whereEqualTo("owner_id" , mApp.getFbId());
+        parseQuery.addDescendingOrder("timestamp");
+        parseQuery.findInBackground(new FindCallback<Impression>() {
+            @Override
+            public void done(List<Impression> impressions, ParseException e) {
+                if(e == null){
+                    for(Impression im : impressions){
+                        try {
+                            im.getGeoname().fetch();
+                            mApp.myTrails.add(im);
+                            TestUtil.getUserImage(im.getOwnerId() , EnrootActivity.this);
+                        } catch (ParseException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    mApp.datachanged();
+
+                }
+            }
+        });
     }
 
 }

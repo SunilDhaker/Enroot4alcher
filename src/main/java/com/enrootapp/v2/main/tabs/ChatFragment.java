@@ -48,7 +48,7 @@ public class ChatFragment extends EnrootFragment {
 //
 //        adapter = new ChatAdapter(mApp.getFbId(), mApp.getMsgCache());
 //        rv.setAdapter(adapter);
-//        rv.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rv.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
         return v;

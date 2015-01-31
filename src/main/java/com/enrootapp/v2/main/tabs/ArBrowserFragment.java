@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.enrootapp.v2.main.MainActivity;
 import com.enrootapp.v2.main.R;
+import com.enrootapp.v2.main.app.EnrootActivity;
+import com.enrootapp.v2.main.app.EnrootApp;
 import com.enrootapp.v2.main.appunta.android.orientation.OrientationDevice;
 import com.enrootapp.v2.main.appunta.android.orientation.OrientationManager;
 import com.enrootapp.v2.main.data.Impression;
@@ -24,6 +26,8 @@ import com.enrootapp.v2.main.util.ar.ArSurfaceView;
 import com.enrootapp.v2.main.util.ar.MyCamera;
 import com.enrootapp.v2.main.util.ar.SelfieActivity;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -31,7 +35,7 @@ import java.util.TimerTask;
  * Created by sdhaker on 18-01-2015.
  */
 
-public class ArBrowserFragment extends Fragment implements OrientationManager.OnOrientationChangedListener, View.OnClickListener {
+public class ArBrowserFragment extends Fragment implements OrientationManager.OnOrientationChangedListener, View.OnClickListener , EnrootApp.OnDataChangeListner{
 
     private static final String TAG = "ArBrowser Fragment";
     public static boolean flagControlVisible = true;
@@ -45,6 +49,8 @@ public class ArBrowserFragment extends Fragment implements OrientationManager.On
     Timer t;
     private long lastTouchTime = System.currentTimeMillis();
     private boolean doesHideControl = true;
+
+    HashSet<String> drawed = new HashSet() ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -92,6 +98,21 @@ public class ArBrowserFragment extends Fragment implements OrientationManager.On
         };
         t = new Timer();
         t.schedule(tt, 8000, 5000);
+       TimerTask tt2 = new TimerTask() {
+            @Override
+            public void run() {
+                addMax20Texture();
+            }
+        };
+        Timer t2 = new Timer();
+        t2.schedule(tt2 , 8000 , 5000 );
+    }
+
+    private void addMax20Texture() {
+
+        for(Impression i : EnrootApp.getInstance().imressionsAt){
+
+        }
     }
 
 
@@ -189,4 +210,11 @@ public class ArBrowserFragment extends Fragment implements OrientationManager.On
     public void onDetach() {
         super.onDetach();
     }
+
+    @Override
+    public void onDtaChange() {
+
+    }
+
+
 }

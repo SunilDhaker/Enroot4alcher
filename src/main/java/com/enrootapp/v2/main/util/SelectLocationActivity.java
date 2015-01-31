@@ -115,7 +115,7 @@ public class SelectLocationActivity extends EnrootActivity implements LocationLi
                                 Log.d(TAG, venues.get(i).getAsJsonObject().get("name").toString() + "\n");
                                 GeoName loc = new GeoName();
                                 loc.setName(TestUtil.trimQuotes(venues.get(i).getAsJsonObject().get("name").toString()));
-                                loc.setId(TestUtil.trimQuotes(venues.get(i).getAsJsonObject().get("id").toString()));
+                                loc.setgId(TestUtil.trimQuotes(venues.get(i).getAsJsonObject().get("id").toString()));
                                 JsonObject js = venues.get(i).getAsJsonObject().get("location").getAsJsonObject();
                                 LatLng ll = new LatLng(
                                         Double.parseDouble(TestUtil.trimQuotes(js.get("lat").toString())),
@@ -152,7 +152,7 @@ public class SelectLocationActivity extends EnrootActivity implements LocationLi
                if(e == null){
                 synchronized (comb) {
                     for (GeoName g : geoNames) {
-                        comb.put(g.getId(), g);
+                        comb.put(g.getgId(), g);
                     }
                 }
             }}

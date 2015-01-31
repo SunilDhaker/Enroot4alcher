@@ -45,14 +45,17 @@ import com.enrootapp.v2.main.R;
 import com.enrootapp.v2.main.app.EnrootActivity;
 import com.enrootapp.v2.main.appunta.android.orientation.OrientationDevice;
 import com.enrootapp.v2.main.appunta.android.orientation.OrientationManager;
+import com.enrootapp.v2.main.data.GeoName;
 import com.enrootapp.v2.main.data.Impression;
 import com.enrootapp.v2.main.util.FileUtils;
 import com.enrootapp.v2.main.util.Logger;
 import com.enrootapp.v2.main.util.SelectLocationActivity;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -60,6 +63,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class extends the SensorsActivity and is designed tie the AugmentedView
@@ -226,8 +230,13 @@ public class SelfieActivity extends EnrootActivity implements OrientationManager
 //        });
 
 
+        
+        downloadMyTrails();
+        downloadImpressionAt(mApp.getCurrentGeoname());
+        
 
     }
+
 
 
     @Override

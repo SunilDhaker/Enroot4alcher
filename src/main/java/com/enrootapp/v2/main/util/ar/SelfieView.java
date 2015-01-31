@@ -59,7 +59,7 @@ public class SelfieView extends GLSurfaceView implements GLSurfaceView.Renderer,
     float[] viewMatrix = new float[16];
     float[] temp = new float[16];
     float[] temp2 = new float[16];
-    float cout = 0.0f;
+    float cout = -1.0f;
     int count = 0;
     double last = 0.0;
     float aspectRatio;
@@ -202,7 +202,7 @@ public class SelfieView extends GLSurfaceView implements GLSurfaceView.Renderer,
             queueEvent(new Runnable() {
                 @Override
                 public void run() {
-                    border.loadTexture2();
+                    border = new SqureEmpty(mContext);
                 }
             });
         }
@@ -283,7 +283,6 @@ public class SelfieView extends GLSurfaceView implements GLSurfaceView.Renderer,
         mDirectVideoBack = new DirectVideo(backTexture);
         mSurface = new SurfaceTexture(texture);
         mBackSurface = new SurfaceTexture(backTexture);
-        border = new SqureEmpty(mContext);
 
     }
 

@@ -25,12 +25,12 @@ public class GeoName extends ParseObject{
         put("name" , name);
     }
 
-    public String getId() {
-        return getString("id");
+    public String getgId() {
+        return getString("gid");
     }
 
-    public void setId(String Id) {
-        put("id" , Id);
+    public void setgId(String Id) {
+        put("gid" , Id);
     }
 
     public ParseGeoPoint getCoordinates() {

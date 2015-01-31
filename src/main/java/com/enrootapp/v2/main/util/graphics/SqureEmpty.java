@@ -128,13 +128,6 @@ public class SqureEmpty {
         return shader;
     }
 
-    public float getStackPosition() {
-        return stackPosition;
-    }
-
-    public void setStackPosition(float stackPosition) {
-        this.stackPosition = stackPosition;
-    }
 
     public void setContext(Context c) {
         this.c = c;

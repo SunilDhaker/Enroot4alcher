@@ -16,4 +16,7 @@ public class Resources {
         option.inSampleSize = 6;
         return BitmapFactory.decodeFile(f.getAbsolutePath(), option);
     }
+
+
+
 }

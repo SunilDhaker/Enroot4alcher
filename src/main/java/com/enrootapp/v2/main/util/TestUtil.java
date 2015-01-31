@@ -9,8 +9,14 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 
+import com.enrootapp.v2.main.MainActivity;
 import com.enrootapp.v2.main.R;
+import com.enrootapp.v2.main.app.EnrootApp;
+import com.enrootapp.v2.main.data.Impression;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
+import java.io.File;
 import java.util.StringTokenizer;
 
 /**
@@ -145,4 +151,34 @@ public class TestUtil {
             return s;
     }
 
+
+    public static Bitmap getObjectImage(Impression impression, Context context) {
+        if(EnrootApp.getInstance().isLoadingFlags.contains(impression.getObjectId())) {
+            return null;
+
+        }else {
+            File f  = FileUtils.getFile("_imp" + impression.getObjectId());
+            if(f.exists()){
+                return  BitmapFactory.decodeFile(f.getAbsolutePath());
+            }else {
+                if(impression.isFromFacebook()) {
+                    Ion.with(context)
+                            .load(impression.getImageUrl())
+                            .write(FileUtils.getFile("_imp" + impression.getObjectId()))
+                            .setCallback(((MainActivity) context));
+
+                }
+            }
+            }
+      return null ;
+    }
+
+    public static void getUserImage(String fbId , Context context) {
+        File f  = FileUtils.getFile("_usr" + fbId);
+        if(f.exists()) return;
+        Ion.with(context)
+                .load("http://graph.facebook.com/" + fbId + "/picture?type=large")
+                .write(FileUtils.getFile("_usr" + fbId))
+                ;
+    }
 }

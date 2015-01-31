@@ -2,6 +2,7 @@ package com.enrootapp.v2.main.tabs;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.enrootapp.v2.main.app.EnrootApp;
 import com.enrootapp.v2.main.data.GeoName;
 import com.enrootapp.v2.main.data.Impression;
 import com.enrootapp.v2.main.util.DateUtil;
+import com.enrootapp.v2.main.util.TestUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -95,18 +97,10 @@ public class TrailsAdapter extends RecyclerView.Adapter<TrailsAdapter.ViewHolder
             //TODO: change to loading icon
 
             Impression i  = impression ;
-            //impressionImgae.setImageBitmap(impression.getImage(context));
-          /*  Resources.getImpressionImageById(context, impression.getObjectId(), new Resources.OnImpressionImageReceived() {
-                @Override
-                public void onReceived(Bitmap bmp) {
-                    if (impressionImgae != null) impressionImgae.setImageBitmap(bmp);
-                    else bmp.recycle();
-                }
-            });*/
+            impressionImgae.setImageBitmap(TestUtil.getObjectImage(impression , context));
 
-
-//         D   timestamp.setText(DateUtil.elapsedTime(new Date().getTime() - impression.getTimestamp().getTime()));
         }
+
     }
 
 
