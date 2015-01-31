@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:translationZ="10dp">
+
+
+    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        tools:context="com.enrootapp.v2.main.MainActivity" />
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="48dp">
+
+        <LinearLayout
+            android:id="@+id/tabs_container"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:background="#ffffff"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/tab_live"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.2"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:src="@drawable/live_grey" />
+
+            <ImageView
+                android:id="@+id/tab_friends"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.2"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:src="@drawable/friends_blue" />
+
+            <ImageView
+                android:id="@+id/tab_trails"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.2"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:src="@drawable/trails_blue" />
+
+            <ImageView
+                android:id="@+id/tab_conversation"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.2"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:src="@drawable/conversations_blue" />
+
+            <ImageView
+                android:id="@+id/tab_notif"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.2"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:src="@drawable/notifications_grey" />
+        </LinearLayout>
+    </FrameLayout>
+
+
+</RelativeLayout>

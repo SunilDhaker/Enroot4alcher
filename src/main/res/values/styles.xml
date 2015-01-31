@@ -1,0 +1,17 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme1" parent="Theme.AppCompat">
+        <!-- Customize your theme here. -->
+        <item name="android:showDividers">none</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="FacebookLoginButton">
+        <item name="android:text">Continue With FB</item>
+        <item name="android:drawableRight">@drawable/fb</item>
+        <item name="android:background">#727272</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+</resources>

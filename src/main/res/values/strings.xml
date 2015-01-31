@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Enroot</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="facebook_app_id">1597048683861781</string>
+    <string name="title_activity_select_friend">Select Friends</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_layout_test">LayoutTest</string>
+    <string name="title_activity_main_activity2">MainActivity2</string>
+    <string name="loginFacebookButton">login</string>
+    <string name="logoutFacebookButton">logout</string>
+    <string name="title_activity_trail_detail">TrailDetail</string>
+
+</resources>

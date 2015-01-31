@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+
+    <com.enrootapp.v2.main.util.SquareLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/logo" />
+        </RelativeLayout>
+
+    </com.enrootapp.v2.main.util.SquareLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+
+            <com.facebook.widget.LoginButton xmlns:fb="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/authButton"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                fb:login_text="Continue With FB"
+                fb:logout_text="logout"
+
+                 android:visibility="invisible"
+                />
+
+
+
+            <TextView
+                android:id="@+id/wait_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:visibility="gone"
+                android:text="Sit back and relax ...Enroot is working !"
+                android:textColor="#727272"
+                android:textSize="17dp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+
+    <com.enrootapp.v2.main.util.SquareLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/logo" />
+        </RelativeLayout>
+
+    </com.enrootapp.v2.main.util.SquareLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:id="@+id/login_button"
+                android:layout_height="wrap_content"
+                android:text=" Continue with  "
+                android:background="@color/com_facebook_blue"
+                android:drawableRight="@drawable/fb"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>
