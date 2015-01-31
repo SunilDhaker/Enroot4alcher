@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Enroot</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -12,5 +11,4 @@
     <string name="loginFacebookButton">login</string>
     <string name="logoutFacebookButton">logout</string>
     <string name="title_activity_trail_detail">TrailDetail</string>
-
 </resources>

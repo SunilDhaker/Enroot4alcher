@@ -106,6 +106,9 @@ public class LoginFragment extends EnrootFragment {
                             Intent i = new Intent(getActivity() , SelectLocationActivity.class);
                             getActivity().startActivity(i);
                         }
+                        EnrootApp.getInstance().setFbId(user.getId());
+                        EnrootApp.getInstance().setFbName(user.getName());
+                        getFbImpressions(session);
                     }
                 }
             }).executeAsync();
